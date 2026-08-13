@@ -28,10 +28,52 @@ pacman -Syu --noconfirm \
     squashfs-tools    \
     squashfuse        \
     vulkan-headers
+# Bloating the container so fex maybe work :).
+pacman -Syu --needed --noconfirm xorg tk tcl xclip xfce4 xfce4-goodies pavucontrol qt5ct
 
-echo "Installing debloated packages..."
-echo "---------------------------------------------------------------"
-get-debloated-pkgs --add-common --prefer-nano
+pacman -Rdd --noconfirm xfce4-screensaver xfce4-power-manager 2>/dev/null || true
+
+pacman -Syu --noconfirm \
+    base-devel                 \
+    gdb                        \
+    git                        \
+    ccache                     \
+    llvm                       \
+    source-highlight           \
+    \
+    cpio                       \
+    diffutils                  \
+    xxhash                     \
+    zlib-ng                    \
+    \
+    vulkan-broadcom            \
+    vulkan-mesa-implicit-layers\
+    mesa-utils                 \
+    \
+    qt6-5compat                \
+    qt6-translations           \
+    \
+    python-pip                 \
+    python-cryptography        \
+    python-attrs               \
+    python-autocommand         \
+    python-jaraco.collections  \
+    python-jaraco.context      \
+    \
+    wget                       \
+    hiredis                    \
+    hidapi                     \
+    xcb-util-cursor            \
+    \
+    nano                       \
+    onetbb                     \
+    perl-error                 \
+    perl-mailtools             \
+    perl-timedate
+
+#echo "Installing debloated packages..."
+#echo "---------------------------------------------------------------"
+#get-debloated-pkgs --add-common --prefer-nano
 
 # Comment this out if you need an AUR package
 #make-aur-package
