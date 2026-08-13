@@ -13,9 +13,10 @@ export MAIN_BIN=FEX
 export DEPLOY_QT=1
 export DEPLOY_VULKAN=1
 export DEPLOY_PIPEWIRE=1
+export DEPLOY_PYTHON=1 #Because Why not.
 
 # Deploy dependencies
-quick-sharun /usr/bin/FEX* /usr/bin/curl /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/erofsfuse /usr/lib/libFEXCore.so /usr/share/fex-emu/* #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
+quick-sharun /usr/bin/FEX* /usr/bin/curl /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/erofsfuse /usr/lib/libFEXCore.so /usr/share/fex-emu/* /usr/lib/*FEX* #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
 #echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}/bin' >> ./AppDir/.env
 
 # Additional changes can be done in between here
