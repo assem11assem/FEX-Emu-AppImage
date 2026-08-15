@@ -97,6 +97,8 @@ echo "$VERSION" > ~/version
 cd FEX
 mkdir build && cd build
 CC=clang CXX=clang++ cmake .. \
+    -DCMAKE_C_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \ # To support old arm64 CPUs. 
+    -DCMAKE_CXX_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \ # To support old arm64 CPUs.
     -DENABLE_BINFMT=OFF \
     -DCMAKE_AR=/usr/bin/ar \
     -DCMAKE_RANLIB=/usr/bin/ranlib \
