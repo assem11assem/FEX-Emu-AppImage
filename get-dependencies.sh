@@ -95,11 +95,13 @@ VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
 git clone --recursive --depth 1 "$REPO" ./FEX
 echo "$VERSION" > ~/version
 
+# Target ARMv8.2-A baseline extensions to support older Cortex-A76 cores 
+# found in the Raspberry Pi 5 and MediaTek Helio G100.
 cd FEX
 mkdir build && cd build
 CC=clang CXX=clang++ cmake .. \
-    -DCMAKE_C_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \ # To support old arm64 CPUs. 
-    -DCMAKE_CXX_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \ # To support old arm64 CPUs.
+    -DCMAKE_C_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \
+    -DCMAKE_CXX_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \
     -DENABLE_BINFMT=OFF \
     -DCMAKE_AR=/usr/bin/ar \
     -DCMAKE_RANLIB=/usr/bin/ranlib \
