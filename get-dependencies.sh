@@ -40,6 +40,7 @@ pacman -Syu --noconfirm \
     ccache                     \
     llvm                       \
     source-highlight           \
+    nasm                       \
     \
     cpio                       \
     diffutils                  \
