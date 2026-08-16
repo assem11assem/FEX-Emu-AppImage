@@ -65,6 +65,8 @@ pacman -Syu --noconfirm \
     hiredis                    \
     hidapi                     \
     xcb-util-cursor            \
+    bind-tools                 \
+    iputils                    \
     \
     nano                       \
     onetbb                     \
@@ -95,13 +97,13 @@ VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
 git clone --recursive --depth 1 "$REPO" ./FEX
 echo "$VERSION" > ~/version
 
-# Target ARMv8.2-A baseline extensions to support older Cortex-A76 cores 
-# found in the Raspberry Pi 5 and MediaTek Helio G100.
+# Target ARMv8 baseline extensions to support older ARMv8 cpus
+# found in the Raspberry Pi 5 as GitHub actions seems to target modern cpus
 cd FEX
 mkdir build && cd build
 CC=clang CXX=clang++ cmake .. \
-    -DCMAKE_C_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \
-    -DCMAKE_CXX_FLAGS="-march=armv8.2-a+fp16+rcpc+dotprod" \
+    -DTUNE_CPU=generic \
+	-DTUNE_ARCH=generic \
     -DENABLE_BINFMT=OFF \
     -DCMAKE_AR=/usr/bin/ar \
     -DCMAKE_RANLIB=/usr/bin/ranlib \
