@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# curl wrapper: resolve domain via ping or custom DNS, then call curl with --resolve
+set -euo pipefail
+
+# Default: no custom DNS (use ping)
+DNS_SERVER="${DNS_SERVER:-}"
+
+# Parse optional --dns-server argument
+args=()
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dns-server)
+            if [[ $# -lt 2 ]]; then
+                echo "Error: --dns-server requires an argument" >&2
+                exit 1
+            fi
+            DNS_SERVER="$2"
+            shift 2
+            ;;
+        *)
+            args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+if [[ ${#args[@]} -eq 0 ]]; then
+    echo "Usage: $0 [--dns-server <IP|default>] <URL or domain> [curl options...]" >&2
+    exit 1
+fi
+
+# Find the first non-option argument (the URL/domain)
+URL=""
+for arg in "${args[@]}"; do
+    if [[ "$arg" != -* ]]; then
+        URL="$arg"
+        break
+    fi
+done
+
+if [[ -z "$URL" ]]; then
+    echo "No URL/domain found in arguments." >&2
+    exit 1
+fi
+
+# Extract host:port from the URL/domain
+HOSTPORT="${URL#*://}"      # remove scheme if present
+HOSTPORT="${HOSTPORT%%/*}"   # remove path
+HOSTPORT="${HOSTPORT#*@}"    # remove userinfo
+
+# Extract domain and port
+if [[ "$HOSTPORT" == *:* ]]; then
+    DOMAIN="${HOSTPORT%%:*}"
+    PORT="${HOSTPORT##*:}"
+else
+    DOMAIN="$HOSTPORT"
+    if [[ "$URL" == https://* ]]; then
+        PORT=443
+    else
+        PORT=80
+    fi
+fi
+
+if [[ -z "$DOMAIN" ]]; then
+    echo "Could not determine domain from: $URL" >&2
+    exit 1
+fi
+
+# Resolve IP based on DNS_SERVER setting
+IP=""
+if [[ "$DNS_SERVER" == "default" ]]; then
+    # Use all nameservers from /etc/resolv.conf, fallback to 8.8.8.8
+    if ! command -v dig >/dev/null 2>&1; then
+        echo "Error: 'dig' is required when DNS_SERVER=default." >&2
+        exit 1
+    fi
+
+    dns_servers=()
+    if [[ -r /etc/resolv.conf ]]; then
+        while IFS= read -r line; do
+            [[ "$line" =~ ^[[:space:]]*# ]] && continue
+            [[ -z "$line" ]] && continue
+            if [[ "$line" =~ ^[[:space:]]*nameserver[[:space:]]+([0-9.]+) ]]; then
+                dns_servers+=("${BASH_REMATCH[1]}")
+            fi
+        done < /etc/resolv.conf
+    fi
+
+    if [[ ${#dns_servers[@]} -eq 0 ]]; then
+        dns_servers=("8.8.8.8")
+    fi
+
+    for dns in "${dns_servers[@]}"; do
+        IP="$(dig +short "@$dns" "$DOMAIN" | head -n1)"
+        if [[ -n "$IP" ]]; then
+            break
+        fi
+    done
+elif [[ -n "$DNS_SERVER" ]]; then
+    # Use a specific DNS server
+    if ! command -v dig >/dev/null 2>&1; then
+        echo "Error: 'dig' is required when a custom DNS server is specified." >&2
+        exit 1
+    fi
+    IP="$(dig +short "@$DNS_SERVER" "$DOMAIN" | head -n1)"
+else
+    # Fallback to ping (original method)
+    IP="$(ping -c 1 -w 1 "$DOMAIN" | awk -F'[（）()]' '/PING/ {print $2}')"
+fi
+
+if [[ -z "$IP" ]]; then
+    echo "Could not resolve domain: $DOMAIN" >&2
+    exit 1
+fi
+
+# Call the real curl binary, forcing the domain to resolve to the IP we obtained
+exec ${SHARUN_DIR}/bin/real_curl --resolve "${DOMAIN}:${PORT}:${IP}" "${args[@]}"
