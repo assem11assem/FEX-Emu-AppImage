@@ -17,6 +17,10 @@ export DEPLOY_PYTHON=1 #Because Why not.
 
 # Deploy dependencies
 quick-sharun /bin/FEX* /usr/bin/FEX* /bin/bash /usr/bin/curl /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/*erofs* /bin/*erofs* /usr/lib/libFEXCore.so /usr/share/fex-emu/* /usr/lib/*FEX* #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
+mv ./AppDir/bin/curl ./AppDir/bin/real_curl
+chmod +x ./curl
+mv ./curl ./AppDir/bin/curl
+
 #echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}/bin' >> ./AppDir/.env
 
 # Additional changes can be done in between here
