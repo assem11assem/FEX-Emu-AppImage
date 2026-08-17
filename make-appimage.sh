@@ -16,9 +16,10 @@ export DEPLOY_PIPEWIRE=1
 export DEPLOY_PYTHON=1 #Because Why not.
 
 # Deploy dependencies
-quick-sharun  /usr/bin/FEXRootFSFetcher --  -y --distro-name=ubuntu --distro-version=24.04 -a \
+quick-sharun 
 /usr/bin/FEX  /usr/bin/FEXBash  /usr/bin/FEXConfig  /usr/bin/FEXGetConfig  /usr/bin/FEXOfflineCompiler  /usr/bin/FEXpidof  /usr/bin/FEXServer \
-/usr/bin/bash /usr/bin/curl /usr/bin/ping /usr/bin/dig /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/*erofs* /bin/*erofs* /usr/lib/libFEXCore.so /usr/share/fex-emu/* /usr/lib/*FEX* #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
+/usr/bin/bash /usr/bin/curl /usr/bin/ping /usr/bin/dig /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/*erofs* /bin/*erofs* /usr/lib/libFEXCore.so /usr/share/fex-emu/* /usr/lib/*FEX* \ 
+/usr/bin/FEXRootFSFetcher --  -y --distro-name=ubuntu --distro-version=24.04 -a  #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
 
 #echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}/bin' >> ./AppDir/.env
 #echo 'DNS_SERVER=default' >> ./AppDir/.env
