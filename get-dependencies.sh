@@ -73,7 +73,7 @@ pacman -Syu --noconfirm \
     perl-error                 \
     perl-mailtools             \
     perl-timedate
-
+mv /usr/bin/curl /usr/bin/real_curl
 #echo "Installing debloated packages..."
 #echo "---------------------------------------------------------------"
 #get-debloated-pkgs --add-common --prefer-nano
