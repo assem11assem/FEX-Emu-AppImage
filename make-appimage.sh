@@ -16,10 +16,7 @@ export DEPLOY_PIPEWIRE=1
 export DEPLOY_PYTHON=1 #Because Why not.
 
 # Deploy dependencies
-quick-sharun /bin/FEX* /usr/bin/FEX* /bin/bash /usr/bin/curl /usr/bin/ping /usr/bin/dig /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/*erofs* /bin/*erofs* /usr/lib/libFEXCore.so /usr/share/fex-emu/* /usr/lib/*FEX* #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
-mv ./AppDir/bin/curl ./AppDir/bin/real_curl
-chmod +x ./curl
-mv ./curl ./AppDir/bin/curl
+quick-sharun /bin/FEX* /usr/bin/FEX* /bin/bash /usr/bin/real_curl ./curl /usr/bin/ping /usr/bin/dig /usr/bin/unsquashfs /usr/bin/squashfuse /usr/bin/*erofs* /bin/*erofs* /usr/lib/libFEXCore.so /usr/share/fex-emu/* /usr/lib/*FEX* #/usr/share/binfmts/FEX* /var/lib/binfmts/FEX*
 
 #echo 'SHARUN_WORKING_DIR=${SHARUN_DIR}/bin' >> ./AppDir/.env
 
