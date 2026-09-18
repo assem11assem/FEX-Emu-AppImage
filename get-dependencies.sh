@@ -94,10 +94,10 @@ echo "Making nightly build of FEX-Emu..."
 echo "---------------------------------------------------------------"
 REPO="https://github.com/FEX-Emu/FEX"
 #VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
-VERSION="9377bac"
+VERSION="a6e74cdbe"
 git clone https://github.com/FEX-Emu/FEX.git
 cd FEX
-git checkout 9377bac
+git checkout a6e74cdbe
 git submodule update --init --recursive
 echo "$VERSION" > ~/version
 
