@@ -95,9 +95,11 @@ echo "---------------------------------------------------------------"
 REPO="https://github.com/FEX-Emu/FEX"
 #VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
 VERSION="9377bac"
-git clone --recursive --depth 1 "$REPO" ./FEX
-cd FEX
-git checkout 9377bac
+mkdir FEX && cd FEX
+git init
+git remote add origin "$REPO"
+git fetch --depth 1 origin "$VERSION"
+git checkout FETCH_HEAD
 git submodule update --init --recursive
 echo "$VERSION" > ~/version
 
