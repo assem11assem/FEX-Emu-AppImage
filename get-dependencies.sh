@@ -93,13 +93,16 @@ mv /usr/bin/curl /usr/bin/real_curl
 echo "Making nightly build of FEX-Emu..."
 echo "---------------------------------------------------------------"
 REPO="https://github.com/FEX-Emu/FEX"
-VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
+#VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
+VERSION="9377bac"
 git clone --recursive --depth 1 "$REPO" ./FEX
+cd FEX
+git checkout 9377bac
+git submodule update --init --recursive
 echo "$VERSION" > ~/version
 
 # Target ARMv8 baseline extensions to support older ARMv8 cpus
 # found in the Raspberry Pi 5 as GitHub actions seems to target modern cpus
-cd FEX
 mkdir build && cd build
 CC=clang CXX=clang++ cmake .. \
     -DTUNE_CPU=generic \
