@@ -74,6 +74,9 @@ pacman -Syu --noconfirm \
     perl-mailtools             \
     perl-timedate
 mv /usr/bin/curl /usr/bin/real_curl
+
+wget -O /usr/local/bin/quick-sharun "https://github.com/pkgforge-dev/Anylinux-AppImages/raw/da7649b9443971ef70da92f532e8a2e65a9f97f6/useful-tools/quick-sharun.sh"
+chmod +x /usr/local/bin/quick-sharun
 #echo "Installing debloated packages..."
 #echo "---------------------------------------------------------------"
 #get-debloated-pkgs --add-common --prefer-nano
